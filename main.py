@@ -45,7 +45,7 @@ class Carrinho:
     def __init__(self):
         self.produtos = []
 
-   def adicionar_produto(self, produto, quantidade):
+    def adicionar_produto(self, produto, quantidade):
         for _ in range(quantidade):
             if produto.preco >= 0:
                 produto.gerar_numero_serie()
