@@ -45,10 +45,14 @@ class Carrinho:
     def __init__(self):
         self.produtos = []
 
-    def adicionar_produto(self, produto, quantidade):
+   def adicionar_produto(self, produto, quantidade):
         for _ in range(quantidade):
-            produto.gerar_numero_serie()
-            self.produtos.append(produto)
+            if produto.preco >= 0:
+                produto.gerar_numero_serie()
+                self.produtos.append(produto)
+            else:
+                print(f"Preço do produto {produto.nome} não pode ser negativo.")
+                return False
 
     def remover_produto(self, produto, quantidade):
         for _ in range(quantidade):
