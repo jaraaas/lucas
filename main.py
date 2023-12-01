@@ -1,4 +1,4 @@
-  import random
+import random
 
 class Produto:
     def __init__(self, nome, preco):
@@ -60,29 +60,42 @@ class Carrinho:
 
     def calcular_total(self):
         return sum(produto.preco for produto in self.produtos)
-
+    
     def aplicar_descontos(self):
-        # Aplicar desconto de caneca a cada 4 camisas
-        camisas = [produto for produto in self.produtos if isinstance(produto, Camisa)]
-        if len(camisas) >= 4:
-            canecas_brinde = min(len(camisas) // 4, [produto for produto in self.produtos if isinstance(produto, Caneca)].count())
-            for _ in range(canecas_brinde):
-                caneca = next((produto for produto in self.produtos if isinstance(produto, Caneca)), None)
-                if caneca:
-                    self.produtos.remove(caneca)
+    # Aplicar promoção de caneca
+      camisas = [produto for produto in self.produtos if isinstance(produto, Camisa)]
+      if len(camisas) >= 4:
+        canecas_brinde = min(len(camisas) // 4, [produto for produto in self.produtos if isinstance(produto, Caneca)].count())
+        for _ in range(canecas_brinde):
+            caneca = next((produto for produto in self.produtos if isinstance(produto, Caneca)), None)
+            if caneca:
+                self.produtos.remove(caneca)
+                print(f"Caneca de brinde (promoção a cada 4 camisas)")
 
-        # Aplicar desconto de quadrinho a cada 5 quadrinhos
-        quadrinhos = [produto for produto in self.produtos if isinstance(produto, Quadrinho)]
-        if len(quadrinhos) >= 5:
-            quadrinhos.sort(key=lambda x: x.preco)
-            for i in range(min(len(quadrinhos) // 5, len(quadrinhos))):
-                self.produtos.remove(quadrinhos[i])
+    # Aplicar promoção de quadrinho
+      quadrinhos = [produto for produto in self.produtos if isinstance(produto, Quadrinho)]
+      if len(quadrinhos) >= 5:
+        quadrinhos.sort(key=lambda x: x.preco)
+        quadrinho_mais_barato = quadrinhos[0]
+        self.produtos.remove(quadrinho_mais_barato)
+        print(f"Quadrinho {quadrinho_mais_barato.nome} de brinde (promoção a cada 5 quadrinhos)")
+
+    # Imprimir produtos da promoção
+        for produto in self.produtos:
+            if produto.preco == 0:
+              print(f"* {produto.nome} (promoção)")
+
 
     def finalizar_compra(self):
         self.aplicar_descontos()
         self.produtos.sort(key=lambda x: x.preco)
         for produto in self.produtos:
             produto.imprimir_info()
+                  # Imprimir produtos da promoção
+        for produto in self.produtos:
+            if produto.preco == 0:
+                print(f"* {produto.nome} (promoção)")
+
 
         print(f"\nTotal da Compra: R${self.calcular_total():.2f}")
 
